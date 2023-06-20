@@ -11,9 +11,9 @@ export default class Cuenta {
 		return new Promise(async (resolve, reject) => {
 			try {
 				let result = await db.consulta(
-					'SELECT numero, id_cliente, saldo, estado FROM cuentas'
+					'SELECT u.id, u.nombre, u.apellido, c.numero, c.saldo FROM usuarios u INNER JOIN cuentas c on u.id = c.id_cliente WHERE u.estado = true'
 				);
-				resolve(result.rows);
+				resolve(result);
 			} catch (error) {
 				reject('Error al traer usuarios de la base de datos');
 			}
@@ -36,20 +36,10 @@ export default class Cuenta {
 	create() {
 		return new Promise(async (resolve, reject) => {
 			try {
-				let objCuenta = {
-					numero: this.numero,
-					idCliente: this.idCliente,
-					saldo: this.saldo,
-					estado: this.estado,
-				};
+				console.log(this.idCliente);
 				const query = {
-					text: 'INSERT INTO cuentas VALUES($1, $2, $3, $4) RETURNING numero, id_cliente, saldo, estado',
-					values: [
-						objCuenta.numero,
-						objCuenta.idCliente,
-						objCuenta.saldo,
-						objCuenta.estado,
-					],
+					text: 'INSERT INTO cuentas VALUES ($1, $2, $3, $4) RETURNING numero, id_cliente, saldo, estado',
+					values: [this.numero, this.idCliente, this.saldo, this.estado],
 				};
 				let result = await db.consulta(query);
 				return resolve(result);
@@ -76,8 +66,8 @@ export default class Cuenta {
 		return new Promise(async (resolve, reject) => {
 			try {
 				let query = {
-					text: 'DELETE FROM cuentas WHERE numero = $1',
-					values: [numero],
+					text: 'UPDATE cuentas SET estado=$2 WHERE numero=$1 RETURNING numero, id_cliente, saldo, estado',
+					values: [numero, false],
 				};
 				let result = await db.consulta(query);
 				return resolve(result);
@@ -86,11 +76,32 @@ export default class Cuenta {
 			}
 		});
 	}
+	static sumarSaldo(monto, numCuenta, idCliente) {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let query = {
+					text: 'UPDATE cuentas SET saldo + $1 WHERE numero = $2 AND id_cliente = $3 RETURNING numero, id_cliente, saldo',
+					values: [monto, numCuenta, idCliente],
+				};
+				let result = await db.consulta(query);
+				return resolve(result);
+			} catch (error) {
+				reject('Error al agregar saldo a la cuenta', error);
+			}
+		});
+	}
+	static restarSaldo(monto, numCuenta, idCliente) {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let query = {
+					text: 'UPDATE cuentas SET saldo - $1 WHERE numero = $2 AND id_cliente = $3 RETURNING numero, id_cliente, saldo',
+					values: [monto, numCuenta, idCliente],
+				};
+				let result = await db.consulta(query);
+				return resolve(result);
+			} catch (error) {
+				reject('Error al quitar saldo a la cuenta', error);
+			}
+		});
+	}
 }
-
-// Cuenta.findAll();
-// Cuenta.findById('111111111');
-// let newCuenta = new Cuenta('333333333', 2, 0, false);
-// newCuenta.create();
-// Cuenta.update('333333333', 1, 120000, true);
-// Cuenta.delete('333333333');

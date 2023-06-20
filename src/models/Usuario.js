@@ -13,7 +13,7 @@ export default class Usuario {
 		return new Promise(async (resolve, reject) => {
 			try {
 				let result = await db.consulta(
-					'SELECT id, nombre, apellido, email, password, estado FROM usuarios'
+					'SELECT id, nombre, apellido, email, password, estado FROM usuarios WHERE estado = true'
 				);
 				resolve(result);
 			} catch (error) {

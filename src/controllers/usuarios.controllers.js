@@ -32,13 +32,14 @@ export const deleteUsuario = async (req, res) => {
 };
 export const crearUsuario = async (req, res) => {
 	try {
-		let { nombre, apellido, email, password } = req.body;
+		let { nombre, apellido, email, password, estado } = req.body;
 		let nuevoUsuario = new Usuario(
 			undefined,
 			nombre,
 			apellido,
 			email,
-			password
+			password,
+			estado
 		);
 		let resultado = await nuevoUsuario.create();
 		res.send({
