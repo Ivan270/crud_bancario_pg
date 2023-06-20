@@ -1,0 +1,25 @@
+<div class='container'>
+	<h4>Listado de cuentas</h4>
+	<table class='table table-secondary table-sm table-hover'>
+		<thead>
+			<tr>
+				<th scope='col'>ID</th>
+				<th scope='col'>Nombre Titular</th>
+				<th scope='col'>Apellido Titular</th>
+				<th scope='col'>Num. Cuenta</th>
+				<th scope='col'>Saldo</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each usuarios}}
+				<tr>
+					<th scope='row'>{{this.id}}</th>
+					<td scope='row'>{{this.nombre}}</td>
+					<td scope='row'>{{this.apellido}}</td>
+					<td scope='row'>{{this.cta_num}}</td>
+					<td scope='row'>{{this.saldo}}</td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</div>

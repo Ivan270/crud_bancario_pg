@@ -1,0 +1,58 @@
+<form>
+	<label for='clientId' class='form-label'>ID</label>
+	<input
+		type='text'
+		name='clientId'
+		id='clientId'
+		class='form-control mb-3'
+		value='{{data.id}}'
+		disabled
+	/>
+
+	<label for='clientName' class='form-label'>Nombre</label>
+	<input
+		type='text'
+		name='clientName'
+		id='clientName'
+		class='form-control mb-3'
+		value='{{data.nombre}}'
+	/>
+
+	<label for='clientLastname' class='form-label'>Apellido</label>
+	<input
+		type='text'
+		name='clientLastname'
+		id='clientLastname'
+		class='form-control mb-3'
+		value='{{data.apellido}}'
+	/>
+
+	<label for='clientEmail' class='form-label'>Email</label>
+	<input
+		type='text'
+		name='clientEmail'
+		id='clientEmail'
+		class='form-control mb-3'
+		value='{{data.email}}'
+	/>
+	<label for='clientPassword' class='form-label'>Password</label>
+	<input
+		type='password'
+		name='clientPassword'
+		id='clientPassword'
+		class='form-control mb-3'
+		value='{{data.password}}'
+	/>
+
+	<label for='clientState' class='form-label'>Estado</label>
+	<input
+		type='text'
+		name='clientState'
+		id='clientState'
+		class='form-control mb-3'
+		value='{{data.estado}}'
+	/>
+	<div class='d-grid'>
+		<button class='btn btn-primary'>Actualizar Datos</button>
+	</div>
+</form>

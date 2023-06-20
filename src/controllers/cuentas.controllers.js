@@ -3,7 +3,10 @@ import Cuenta from '../models/Cuenta.js';
 export const getCuentas = async (req, res) => {
 	try {
 		let usuarios = await Cuenta.findAll();
-		res.send({ code: 200, data: usuarios, message: 'OK' });
+		// res.send({ code: 200, data: usuarios, message: 'OK' });
+		res.status(200).render('cuentas', {
+			usuarios,
+		});
 	} catch (error) {
 		res.status(500).send({
 			code: 500,

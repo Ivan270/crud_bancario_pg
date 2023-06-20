@@ -3,7 +3,9 @@ import Usuario from '../models/Usuario.js';
 export const getUsuarios = async (req, res) => {
 	try {
 		let usuarios = await Usuario.findAll();
-		res.send({ code: 200, data: usuarios, message: 'OK' });
+		res.status(200).render('usuarios', {
+			data: usuarios,
+		});
 	} catch (error) {
 		res
 			.status(500)
@@ -14,7 +16,11 @@ export const getUsuariosId = async (req, res) => {
 	try {
 		let { id } = req.params;
 		let encontrado = await Usuario.findById(id);
-		res.send({ code: 200, data: encontrado, message: 'OK' });
+		let user = encontrado[0];
+		// res.send({ code: 200, data: encontrado, message: 'OK' });
+		res.status(200).render('usuario', {
+			user,
+		});
 	} catch (error) {
 		res.status(500).send({ code: 500, message: error });
 	}

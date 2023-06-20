@@ -11,7 +11,7 @@ export default class Cuenta {
 		return new Promise(async (resolve, reject) => {
 			try {
 				let result = await db.consulta(
-					'SELECT u.id, u.nombre, u.apellido, c.numero, c.saldo FROM usuarios u INNER JOIN cuentas c on u.id = c.id_cliente WHERE u.estado = true'
+					'SELECT u.id, u.nombre, u.apellido, c.numero as cta_num, c.saldo FROM usuarios u INNER JOIN cuentas c on u.id = c.id_cliente WHERE u.estado = true'
 				);
 				resolve(result);
 			} catch (error) {
@@ -76,29 +76,29 @@ export default class Cuenta {
 			}
 		});
 	}
-	static sumarSaldo(monto, numCuenta, idCliente) {
+	static sumarSaldo(monto, numCuenta) {
 		return new Promise(async (resolve, reject) => {
 			try {
 				let query = {
-					text: 'UPDATE cuentas SET saldo + $1 WHERE numero = $2 AND id_cliente = $3 RETURNING numero, id_cliente, saldo',
-					values: [monto, numCuenta, idCliente],
+					text: 'UPDATE cuentas SET saldo = saldo + $1 WHERE numero = $2 RETURNING numero, id_cliente, saldo',
+					values: [monto, numCuenta],
 				};
 				let result = await db.consulta(query);
-				return resolve(result);
+				return resolve(result[0]);
 			} catch (error) {
 				reject('Error al agregar saldo a la cuenta', error);
 			}
 		});
 	}
-	static restarSaldo(monto, numCuenta, idCliente) {
+	static restarSaldo(monto, numCuenta) {
 		return new Promise(async (resolve, reject) => {
 			try {
 				let query = {
-					text: 'UPDATE cuentas SET saldo - $1 WHERE numero = $2 AND id_cliente = $3 RETURNING numero, id_cliente, saldo',
-					values: [monto, numCuenta, idCliente],
+					text: 'UPDATE cuentas SET saldo = saldo - $1 WHERE numero = $2 RETURNING numero, id_cliente, saldo',
+					values: [monto, numCuenta],
 				};
 				let result = await db.consulta(query);
-				return resolve(result);
+				return resolve(result[0]);
 			} catch (error) {
 				reject('Error al quitar saldo a la cuenta', error);
 			}

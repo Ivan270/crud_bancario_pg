@@ -23,51 +23,19 @@ export const getTransaccionesId = async (req, res) => {
 	}
 };
 
-const sumarSaldo = async (transaccion) => {
-	let ctaDestino = await Cuenta.findById(transaccion.cuenta_destino);
-	console.log('Sumar a');
-	console.log(ctaDestino);
-	// let sumar = await Cuenta.update(
-	// 	ctaDestino[0].numero,
-	// 	ctaDestino[0].id_cliente,
-	// 	ctaDestino[0].saldo + transaccion.monto,
-	// 	true
-	// );
-};
-const restarSaldo = async (transaccion) => {
-	let ctaOrigen = await Cuenta.findById(transaccion.cuenta_origen);
-	console.log('Restar a');
-	console.log(ctaOrigen);
-	// let restar = await Cuenta.update(
-	// 	ctaOrigen[0].numero,
-	// 	ctaOrigen[0].id_cliente,
-	// 	ctaOrigen[0].saldo - transaccion.monto,
-	// 	true
-	// );
-};
-
 export const createTransaccion = async (req, res) => {
 	try {
 		let { monto, cuenta_origen, cuenta_destino } = req.body;
-		let transaccion = new Transaccion(
-			undefined,
-			undefined,
+		console.log(monto, cuenta_origen, cuenta_destino);
+		let resultado = await Transaccion.create({
 			monto,
 			cuenta_origen,
-			cuenta_destino
-		);
-		console.log(transaccion);
-		// RESTAR A CTA ORIGEN
-		// restarSaldo(transaccion);
-
-		// SUMAR A CTA DESTINO
-		// sumarSaldo(transaccion);
-
-		// let result = await transaccion.create();
-		res.send({ code: 201, data: 'asd', message: 'OK' });
+			cuenta_destino,
+		});
+		res.status(201).send({ code: 201, message: resultado });
 	} catch (error) {
 		res
 			.status(500)
-			.send({ code: 500, message: 'Error al crear nueva transaccion', error });
+			.send({ code: 500, message: 'Error al crear nueva transaccion' + error });
 	}
 };

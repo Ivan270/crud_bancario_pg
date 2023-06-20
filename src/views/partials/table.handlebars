@@ -1,0 +1,35 @@
+<table class='table table-secondary table-sm table-hover'>
+	<thead>
+		<tr>
+			<th scope='col'>ID</th>
+			<th scope='col'>Nombre</th>
+			<th scope='col'>Apellido</th>
+			<th scope='col'>Email</th>
+			<th scope='col'>Estado</th>
+			<th scope='col'>Editar</th>
+			<th scope='col'>Eliminar</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each data}}
+			<tr>
+				<th scope='row'>{{this.id}}</th>
+				<td scope='row'>{{this.nombre}}</td>
+				<td scope='row'>{{this.apellido}}</td>
+				<td scope='row'>{{this.email}}</td>
+				{{#if estado}}
+					<td scope='row'>Activo</td>
+				{{else}}
+					<td scope='row'>Inactivo</td>
+				{{/if}}
+				<td scope='row'><a
+						href='/banco/usuarios/id/{{this.id}}'
+						class='btn btn-sm btn-warning'
+					>Editar</a></td>
+				<td scope='row'><button
+						class='btn btn-sm btn-danger'
+					>Eliminar</button></td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
